@@ -1,55 +1,24 @@
-name: 🐍 Generate Contribution Snake Animation
+name: Generate Snake Animation
 
 on:
-  # Run automatically every 6 hours
   schedule:
-    - cron: "0 */6 * * *"
-  
-  # Allow manual triggering
+    - cron: "0 0 * * *" # every day at midnight
   workflow_dispatch:
-  
-  # Run on pushes to main branch
-  push:
-    branches:
-      - main
 
 jobs:
-  generate-snake:
+  generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    
-    permissions:
-      contents: write
-      
     steps:
-      - name: 🔄 Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: 🐍 Generate contribution snake
-        uses: Platane/snk@v3
+      - uses: Platane/snk@v3
         with:
           github_user_name: jat1ndh1man
           outputs: |
-            dist/snake.svg
-            dist/snake-dark.svg?palette=github-dark
-            dist/snake-modern.svg?palette=github-dark&background=%23000000
-            dist/snake-neon.svg?palette=github-dark&background=%230a0a0a&color_dots=%2300ff88,%2300d4ff,%23ff0080,%23ffaa00,%23ff6b6b
-            dist/snake-minimal.svg?palette=github-dark&background=%23161b22&color_dots=%2321262d,%2339424e,%236a737d,%23d1d9e0
-            dist/snake-cyberpunk.svg?palette=github-dark&background=%23000000&color_dots=%23ff0080,%2300ff88,%23ff6b00,%2300d4ff,%23c77dff
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: 🚀 Deploy to GitHub Pages
+            ./output/github-contribution-grid-snake.svg
+            ./output/github-contribution-grid-snake-dark.svg?palette=github-dark
+      - name: Push to GitHub
         uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: output
-          build_dir: dist
-          commit_message: "🐍 Update snake animations"
-          jekyll: false
+          build_dir: output
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: ✅ Verify deployment
-        run: |
-          echo "✨ Snake animations generated successfully!"
-          echo "🌐 Available at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/snake-dark.svg"
