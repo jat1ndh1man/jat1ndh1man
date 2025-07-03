@@ -1,4 +1,4 @@
-# Hi, I'm Karanveer 👋
+# Hi, I'm Jatin 👋
 
 Welcome to my GitHub profile!
 
